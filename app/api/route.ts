@@ -3,6 +3,9 @@ import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeClient } from "@pinecone-database/pinecone";
 import { VectorDBQAChain } from "langchain/chains";
 import { OpenAI } from "langchain/llms/openai";
+
+export const runtime = "edge";
+
 const { PINECONE_API_KEY, PINECONE_ENVIRONMENT, PINECONE_INDEX } = process.env;
 const PARAM_NAME = "query";
 const ADDITIONAL_PROMPT =
