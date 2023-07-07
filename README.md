@@ -10,7 +10,7 @@ It is powered by LangChain and Pinecone vector database.
 
 Theocratic Search is a proof of concept for a new way to search for theocratic information.
 
-The traditional search bar in [JW.org](https://www.jw.org/en/) often rely on specific keywords to retrieve results, so the quality of results can vary depending on the phrasing of your query. Furthermore, sometimes these results broadly answer the query or provide irrelevant information.
+The traditional search bar in [JW.org](https://www.jw.org/en/) and [WOL](https://wol.jw.org/) often rely on specific keywords to retrieve results, so the quality of results can vary depending on the phrasing of your query. Furthermore, sometimes these results broadly answer the query or provide irrelevant information.
 
 The whole point of search is finding relevant information quickly, which is challenging to achieve without understanding the user's search intent. Theocratic Search solves this problem by using AI to understand the user's search intent and retrieve the most relevant information that is based on publications of Jehovah's Witnesse. This helps you save time, as you won't have to explore different articles to find the necessary information.
 
