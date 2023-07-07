@@ -1,4 +1,9 @@
-<img width="269" alt="Screenshot 2023-07-07 at 7 50 15 AM" src="https://github.com/rimorin/theocratic-search/assets/40650158/97c3ddbe-06eb-482c-a63d-589db9eb158e">
+<p float="left">
+<img width="290" alt="Screenshot 2023-07-07 at 4 53 28 PM" src="https://github.com/rimorin/theocratic-search/assets/40650158/e28efb39-2392-49cc-bb79-ec3c3bd481a7">
+<img width="278" alt="Screenshot 2023-07-07 at 5 01 06 PM" src="https://github.com/rimorin/theocratic-search/assets/40650158/f5ad6c0c-c36a-4d58-b352-fc31485fe49f">
+<img width="285" alt="Screenshot 2023-07-07 at 5 05 03 PM" src="https://github.com/rimorin/theocratic-search/assets/40650158/73832f6c-c846-4004-9110-0def4011d74a">
+<img width="287" alt="Screenshot 2023-07-07 at 5 07 05 PM" src="https://github.com/rimorin/theocratic-search/assets/40650158/75be8dda-30c0-4b07-95cc-886eed0a8423">
+</p>
 
 # Theocratic Search
 
