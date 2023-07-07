@@ -80,7 +80,7 @@ export default function Home() {
           </label>
 
           <textarea
-            className={`w-full rounded-lg border-gray-200 p-3 text-sm ${
+            className={`w-full rounded-lg border-gray-200 p-3 ${
               isSearching && "opacity-20 dark:bg-gray-200"
             }`}
             disabled
