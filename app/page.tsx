@@ -60,7 +60,7 @@ export default function Home() {
             </div>
           </div>
         )}
-        <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <div className="mx-auto max-w-screen-xl px-4 pt-8 sm:px-6 sm:py-12 lg:px-8">
           <div className="sm:flex sm:items-center sm:justify-between">
             <div className="text-center sm:text-left">
               <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
@@ -103,7 +103,7 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <div className="mx-auto max-w-screen-xl min-h-screen px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <form className="mx-auto mb-0 mt-8 space-y-4">
           <div>
             <label
