@@ -53,7 +53,7 @@ export default function Home() {
                 </svg>
               </div>
               <div className="ml-3">
-                <p className="text-sm text-gray-700 dark:text-gray-400">
+                <p className="text-gray-700 dark:text-gray-400">
                   Copied to clipboard!
                 </p>
               </div>
@@ -117,7 +117,7 @@ export default function Home() {
                 type="text"
                 placeholder="Ask me a question ..."
                 name="hs-trailing-button-add-on-with-icon"
-                className="py-3 px-4 block w-full border-gray-200 shadow-sm rounded-l-md text-sm dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 focus:ring-0 focus:ring-offset-0"
+                className="py-3 px-4 block w-full border-gray-200 shadow-sm rounded-l-md dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 focus:ring-0 focus:ring-offset-0"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={handleEnterKey}
@@ -125,7 +125,7 @@ export default function Home() {
               />
               <button
                 type="button"
-                className="inline-flex flex-shrink-0 justify-center items-center h-[2.875rem] w-[2.875rem] rounded-r-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm"
+                className="inline-flex flex-shrink-0 justify-center items-center h-[3.125rem] w-[2.875rem] rounded-r-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                 onClick={handleClick}
                 disabled={isSearching}
               >
@@ -160,7 +160,7 @@ export default function Home() {
               <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 ">
                 <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
                   <textarea
-                    className="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                    className="w-full px-0 text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
                     disabled
                     rows={8}
                     id="message"
