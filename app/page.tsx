@@ -1,10 +1,13 @@
 "use client";
 import { useState } from "react";
 
+const DEFAULT_NOTIFICATION_TIMEOUT = 3000;
+
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [searchResults, setSearchResults] = useState<string>("");
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [showNotification, setShowNotification] = useState<boolean>(false);
 
   const fetchResult = async (searchTerm: string) => {
     if (searchTerm === "") return;
@@ -13,7 +16,7 @@ export default function Home() {
     const response = await fetch(`/api?query=${searchTerm}`);
     const data = await response.json();
     setIsSearching(false);
-    setSearchResults(data.text);
+    setSearchResults(data.text.trim());
   };
 
   const handleEnterKey = async (e: any) => {
@@ -31,6 +34,32 @@ export default function Home() {
   return (
     <>
       <header>
+        {showNotification && (
+          <div
+            className="bg-white border rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-700 absolute bottom-5 left-1/2 -translate-x-1/2"
+            role="alert"
+          >
+            <div className="flex p-4">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-4 w-4 text-blue-500 mt-0.5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-gray-700 dark:text-gray-400">
+                  Copied to clipboard!
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
           <div className="sm:flex sm:items-center sm:justify-between">
             <div className="text-center sm:text-left">
@@ -76,88 +105,122 @@ export default function Home() {
       </header>
       <div className="mx-auto max-w-screen-xl min-h-screen px-4 sm:px-6 lg:px-8">
         <form className="mx-auto mb-0 mt-8 space-y-4">
-          <div className="relative">
-            <label htmlFor="Search" className="sr-only">
-              Search
+          <div>
+            <label
+              htmlFor="hs-trailing-button-add-on-with-icon"
+              className="sr-only"
+            >
+              Label
             </label>
-
-            <input
-              type="text"
-              id="Search"
-              placeholder="Ask me a question ..."
-              className="w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={handleEnterKey}
-              disabled={isSearching}
-            />
-
-            <span className="absolute inset-y-0 end-0 grid w-10 place-content-center">
+            <div className="flex rounded-md shadow-sm">
+              <input
+                type="text"
+                placeholder="Ask me a question ..."
+                name="hs-trailing-button-add-on-with-icon"
+                className="py-3 px-4 block w-full border-gray-200 shadow-sm rounded-l-md text-sm dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 focus:ring-0 focus:ring-offset-0"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleEnterKey}
+                disabled={isSearching}
+              />
               <button
                 type="button"
-                className="text-gray-600 hover:text-gray-700"
+                className="inline-flex flex-shrink-0 justify-center items-center h-[2.875rem] w-[2.875rem] rounded-r-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm"
                 onClick={handleClick}
                 disabled={isSearching}
               >
-                <span className="sr-only">Search</span>
-
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-4 w-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                  />
-                </svg>
-              </button>
-            </span>
-          </div>
-          <div className="items-center relative">
-            <label className="sr-only" htmlFor="message">
-              Message
-            </label>
-
-            <textarea
-              className={`w-full rounded-lg border-gray-200 p-3 ${
-                isSearching && "opacity-20 dark:bg-gray-200"
-              }`}
-              disabled
-              rows={10}
-              id="message"
-              value={searchResults}
-              style={{ resize: "none" }}
-            ></textarea>
-            {isSearching && (
-              <div
-                role="status"
-                className="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2"
-              >
-                <svg
-                  aria-hidden="true"
-                  className="inline w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-pink-600"
-                  viewBox="0 0 100 101"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                {isSearching ? (
+                  <span
+                    className="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full"
+                    role="status"
+                    aria-label="loading"
+                  >
+                    <span className="sr-only">Loading...</span>
+                  </span>
+                ) : (
+                  <svg
+                    className="h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
                     fill="currentColor"
-                  />
-                  <path
-                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                    fill="currentFill"
-                  />
-                </svg>
-                <span className="sr-only">Loading...</span>
-              </div>
-            )}
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
+          {searchResults && (
+            <div className="items-center relative">
+              <label className="sr-only" htmlFor="answer">
+                Answer
+              </label>
+              <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 ">
+                <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
+                  <textarea
+                    className="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                    disabled
+                    rows={8}
+                    id="message"
+                    value={searchResults}
+                    style={{ resize: "none" }}
+                  ></textarea>
+                </div>
+                <div className="text-end px-3 py-2 border-t dark:border-gray-600">
+                  <div className="pl-0 space-x-1 sm:pl-2">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center items-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                      onClick={async () => {
+                        await navigator.clipboard.writeText(searchResults);
+                        setShowNotification(true);
+                        setTimeout(() => {
+                          setShowNotification(false);
+                        }, DEFAULT_NOTIFICATION_TIMEOUT);
+                      }}
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 18 20"
+                      >
+                        <path d="M5 9V4.13a2.96 2.96 0 0 0-1.293.749L.879 7.707A2.96 2.96 0 0 0 .13 9H5Zm11.066-9H9.829a2.98 2.98 0 0 0-2.122.879L7 1.584A.987.987 0 0 0 6.766 2h4.3A3.972 3.972 0 0 1 15 6v10h1.066A1.97 1.97 0 0 0 18 14V2a1.97 1.97 0 0 0-1.934-2Z" />
+                        <path d="M11.066 4H7v5a2 2 0 0 1-2 2H0v7a1.969 1.969 0 0 0 1.933 2h9.133A1.97 1.97 0 0 0 13 18V6a1.97 1.97 0 0 0-1.934-2Z" />
+                      </svg>
+                      <span className="sr-only">Copy</span>
+                    </button>
+                    {navigator.share && (
+                      <button
+                        type="button"
+                        className="inline-flex justify-center items-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                        onClick={() => {
+                          navigator.share({
+                            title: searchTerm,
+                            text: searchResults,
+                          });
+                        }}
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 18 18"
+                        >
+                          <path d="M14.419 10.581a3.564 3.564 0 0 0-2.574 1.1l-4.756-2.49a3.54 3.54 0 0 0 .072-.71 3.55 3.55 0 0 0-.043-.428L11.67 6.1a3.56 3.56 0 1 0-.831-2.265c.006.143.02.286.043.428L6.33 6.218a3.573 3.573 0 1 0-.175 4.743l4.756 2.491a3.58 3.58 0 1 0 3.508-2.871Z" />
+                        </svg>
+                        <span className="sr-only">Share</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </form>
       </div>
     </>
