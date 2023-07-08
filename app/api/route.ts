@@ -1,7 +1,7 @@
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeClient } from "@pinecone-database/pinecone";
-import { VectorDBQAChain } from "langchain/chains";
+import { RetrievalQAChain } from "langchain/chains";
 import { OpenAI } from "langchain/llms/openai";
 
 export const runtime = "edge";
@@ -55,9 +55,7 @@ export async function GET(request: Request) {
     new OpenAIEmbeddings(),
     { pineconeIndex }
   );
-  const chain = VectorDBQAChain.fromLLM(OpenAiLLM, vectorStore, {
-    k: 1,
-  });
+  const chain = RetrievalQAChain.fromLLM(OpenAiLLM, vectorStore.asRetriever());
 
   const response = await chain.call({
     query: `${query}. ${ADDITIONAL_PROMPT}`,
