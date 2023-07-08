@@ -189,7 +189,7 @@ export default function Home() {
                   <textarea
                     className="w-full px-0 text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
                     disabled
-                    rows={8}
+                    rows={10}
                     id="message"
                     value={searchResults}
                     style={{ resize: "none" }}
