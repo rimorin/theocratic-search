@@ -22,6 +22,7 @@ export default function Home() {
   const handleEnterKey = async (e: any) => {
     if (e.key === "Enter") {
       e.preventDefault();
+      e.target.blur();
       fetchResult(searchTerm);
     }
   };
@@ -36,7 +37,7 @@ export default function Home() {
       <header>
         {showNotification && (
           <div
-            className="bg-white border rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-700 absolute bottom-5 left-1/2 -translate-x-1/2"
+            className="bg-white border rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-700 absolute bottom-5 left-1/2 -translate-x-1/2 z-20"
             role="alert"
           >
             <div className="flex p-4">
