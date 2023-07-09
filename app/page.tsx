@@ -117,7 +117,7 @@ export default function Home() {
                 type="text"
                 placeholder="Ask me a question ..."
                 name="hs-trailing-button-add-on-with-icon"
-                className="py-3 px-4 block w-full border-gray-200 shadow-sm rounded-l-md dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 focus:ring-0 focus:ring-offset-0"
+                className="py-3 px-4 block w-full border-gray-200 shadow-sm rounded-l-md dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 focus:z-10 focus:ring-0 focus:ring-offset-0"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={handleEnterKey}
