@@ -15,8 +15,8 @@ const TEMPLATE = `Answer the following QUESTION using only the documents provide
 Do not use any outside sources.
 If you don't know the answer, just say that you don't know. 
 Don't try to make up an answer.
-If you know the answer, explain it using the bible references in the documents.
-When quoting a scripture, use the Jehovah's Witnesses New World Translation of the Holy Scriptures.
+If you know the answer, explain it with bible scriptures.
+When quoting bible scriptures, use the Jehovah's Witnesses New World Translation of the Holy Scriptures.
 
 QUESTION: {question}
 `;
