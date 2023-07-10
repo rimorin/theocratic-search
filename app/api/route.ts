@@ -1,7 +1,10 @@
 import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { PineconeClient } from "@pinecone-database/pinecone";
-import { RetrievalQAChain } from "langchain/chains";
+import {
+  ConversationalRetrievalQAChain,
+  RetrievalQAChain,
+} from "langchain/chains";
 import { OpenAI } from "langchain/llms/openai";
 import { PromptTemplate } from "langchain";
 
@@ -11,14 +14,15 @@ const { PINECONE_API_KEY, PINECONE_ENVIRONMENT, PINECONE_INDEX } = process.env;
 const PARAM_NAME = "query";
 const OpenAiLLM = new OpenAI({ temperature: 0 });
 
-const TEMPLATE = `Answer the following QUESTION using only the documents provided. 
-Do not use any outside sources.
-If you don't know the answer, just say that you don't know. 
-Don't try to make up an answer.
-If you know the answer, explain it with bible scriptures.
-When quoting bible scriptures, use the Jehovah's Witnesses New World Translation of the Holy Scriptures.
+const TEMPLATE = `
+Your task is to answer the following question:
 
-QUESTION: {question}
+{question}
+
+If you don't know the answer, just say that you don't know.
+Do not use outside sources.
+Include scripture references if applicable.
+Use the NWT translation when quoting scriptures.
 `;
 const LLMPrompt = new PromptTemplate({
   template: TEMPLATE,
@@ -82,6 +86,54 @@ export async function GET(request: Request) {
 
   const response = await chain.call({
     query: question,
+  });
+  return new Response(JSON.stringify(response));
+}
+
+export async function POST(request: Request) {
+  // get question string and chats list from request body
+  const { question, chats } = await request.json();
+  console.log(question);
+  console.log(chats);
+
+  // check empty question
+  if (!question) {
+    return new Response(
+      JSON.stringify({
+        error: "Empty question",
+      })
+    );
+  }
+
+  // check missing environment variables
+  if (!PINECONE_API_KEY || !PINECONE_ENVIRONMENT || !PINECONE_INDEX) {
+    return new Response(
+      JSON.stringify({
+        error: "Missing environment variables",
+      })
+    );
+  }
+
+  const prompt = await LLMPrompt.format({ question: question });
+  const pineconeIndex = await initialisePinconeIndex();
+  const vectorStore = await PineconeStore.fromExistingIndex(
+    new OpenAIEmbeddings(),
+    { pineconeIndex }
+  );
+
+  const chain = ConversationalRetrievalQAChain.fromLLM(
+    OpenAiLLM,
+    vectorStore.asRetriever()
+  );
+
+  const chatsString = chats
+    .filter((chat: any) => chat.type === "answer")
+    .map((chat: any) => chat.message)
+    .join("\n");
+
+  const response = await chain.call({
+    question: prompt,
+    chat_history: chatsString,
   });
   return new Response(JSON.stringify(response));
 }
