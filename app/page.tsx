@@ -156,9 +156,8 @@ export default function Home() {
           </div>
         </div>
       )}
-
       <div className="flex flex-col justify-between h-screen">
-        <div className="max-w-screen-xl px-4 pt-8 sm:px-6 sm:py-12 lg:px-8">
+        <div className="max-w-screen-xl px-4 pt-6 sm:px-6 sm:py-12 lg:px-8">
           <div className="sm:flex sm:items-center sm:justify-between">
             <div className="text-center sm:text-left">
               <h1 className="text-2xl md:text-4xl md:leading-tight font-bold text-gray-900 sm:text-3xl dark:text-white">
@@ -252,7 +251,7 @@ export default function Home() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 value={searchTerm}
                 rows={5}
-                className="p-4 pb-12 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 z-10"
+                className="p-4 pb-12 block w-full border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
                 placeholder={DEFAULT_INPUT_PLACEHOLDER}
               ></textarea>
               <div className="absolute bottom-px inset-x-px p-2 rounded-b-md bg-white dark:bg-slate-900">
