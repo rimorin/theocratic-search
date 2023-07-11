@@ -10,18 +10,15 @@ export const runtime = "edge";
 const { PINECONE_API_KEY, PINECONE_ENVIRONMENT, PINECONE_INDEX } = process.env;
 const OpenAiLLM = new OpenAI({ temperature: 0 });
 
-const COMMON_TEMPLATE = `If you don't know the answer, just say that you don't know.
-Do not use outside sources.
-Include scripture references if applicable.
-Use the NWT translation when quoting scriptures.`;
-
 const PROMPT_TEMPLATE = `
-Your task is to answer the following question:
+Answer the question: {question}
 
-{question}
-
-${COMMON_TEMPLATE}
+Do not use outside sources. If you don't know the answer, just say that you don't know. Use scriptures to support your answer. Use the New World Translation when quoting scriptures.
 `;
+
+const questionGeneratorPrompt =
+  "Generate a question based on the chat history: {chat_history}";
+
 const LLMPrompt = new PromptTemplate({
   template: PROMPT_TEMPLATE,
   inputVariables: ["question"],
@@ -57,7 +54,7 @@ export async function POST(request: Request) {
       })
     );
   }
-  const prompt = await LLMPrompt.format({ question: question });
+  // const prompt = await LLMPrompt.format({ question: question });
   const pineconeIndex = await initialisePinconeIndex();
   const vectorStore = await PineconeStore.fromExistingIndex(
     new OpenAIEmbeddings(),
@@ -66,7 +63,17 @@ export async function POST(request: Request) {
 
   const chain = ConversationalRetrievalQAChain.fromLLM(
     OpenAiLLM,
-    vectorStore.asRetriever()
+    vectorStore.asRetriever(),
+    {
+      questionGeneratorChainOptions: {
+        llm: OpenAiLLM,
+        template: questionGeneratorPrompt,
+      },
+      qaChainOptions: {
+        type: "stuff",
+        prompt: LLMPrompt,
+      },
+    }
   );
 
   const chatsString = chats
@@ -81,7 +88,7 @@ export async function POST(request: Request) {
     .join("\n");
 
   const response = await chain.call({
-    question: prompt,
+    question: question,
     chat_history: chatsString,
   });
   return new Response(JSON.stringify(response));
