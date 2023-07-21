@@ -14,6 +14,7 @@ const PROMPT_TEMPLATE = `
 Answer the question: {question}
 
 Do not use outside sources. If you don't know the answer, just say that you don't know.
+If applicable, please provide bible references for your answers.
 `;
 
 const LLMPrompt = new PromptTemplate({
