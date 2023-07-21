@@ -13,11 +13,8 @@ const OpenAiLLM = new OpenAI({ temperature: 0 });
 const PROMPT_TEMPLATE = `
 Answer the question: {question}
 
-Do not use outside sources. If you don't know the answer, just say that you don't know. Use scriptures to support your answer. Use the New World Translation when quoting scriptures.
+Do not use outside sources. If you don't know the answer, just say that you don't know.
 `;
-
-const questionGeneratorPrompt =
-  "Generate a question based on the chat history: {chat_history}";
 
 const LLMPrompt = new PromptTemplate({
   template: PROMPT_TEMPLATE,
@@ -63,32 +60,23 @@ export async function POST(request: Request) {
 
   const chain = ConversationalRetrievalQAChain.fromLLM(
     OpenAiLLM,
-    vectorStore.asRetriever(),
-    {
-      questionGeneratorChainOptions: {
-        llm: OpenAiLLM,
-        template: questionGeneratorPrompt,
-      },
-      qaChainOptions: {
-        type: "stuff",
-        prompt: LLMPrompt,
-      },
-    }
+    vectorStore.asRetriever()
   );
 
   const chatsString = chats
     .map((chat: any) => {
+      const message = chat.message;
       // if chat is a question, return the question
       if (chat.type === "question") {
-        return `Human: ${chat.message}`;
+        return `Human: ${message}`;
       }
       // if chat is an answer, return the question and answer
-      return `AI: ${chat.message}`;
+      return `AI: ${message}`;
     })
     .join("\n");
 
   const response = await chain.call({
-    question: question,
+    question: await LLMPrompt.format({ question: question }),
     chat_history: chatsString,
   });
   return new Response(JSON.stringify(response));
